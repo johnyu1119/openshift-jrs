@@ -21,11 +21,12 @@ setup_jrs() {
     JS_MAIL_SENDER=${JS_MAIL_SENDER:-admin@example.com}
     JS_WEB_DEPLOYMENT_URI=${JS_WEB_DEPLOYMENT_URI:-http://localhost:8080/jasperserver}
     pushd ${JS_HOME}/buildomatic
-    cat <<EOF > default_master.properties 
+    cat <<EOF > default_master.properties
 appServerType=tomcat
 appServerDir=${CATALINA_HOME}
 dbType=${JS_DB_TYPE}
 dbHost=${JS_DB_HOST}
+dbPort=${JS_DB_PORT}
 dbUsername=${JS_DB_USER}
 dbPassword=${JS_DB_PASSWORD}
 quartz.mail.sender.host=${JS_MAIL_HOST}
