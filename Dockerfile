@@ -11,10 +11,12 @@ ENV JS_HOME=/opt/jrs \
 
 COPY entrypoint.sh /
 
-RUN apk update && \
+RUN rm -fr /usr/local/tomcat/webapps/{examples,docs} && \
+    apk update && \
+    apk add openjdk8-jdk && \
     wget -qO /tmp/jrs.zip http://downloads.sourceforge.net/project/jasperserver/JasperServer/JasperReports%20Server%20Community%20Edition%20${JS_VERSION}/TIB_js-jrs-cp_${JS_VERSION}_bin.zip && \
     mkdir -p ${JS_HOME} && \
-    unzip -q /tmp/jrs.zip -d ${JS_HOME}/ && \
+    unzip -q /tmp/jrs.zip jasperreports-server-cp-${JS_VERSION}-bin/* -d ${JS_HOME}/ && \
     mv -v ${JS_HOME}/jasperreports-server-cp-${JS_VERSION}-bin/* ${JS_HOME}/ && \
     chmod a+x /entrypoint.sh && \
     rm -rf ${JS_HOME}/jasperreports-server-cp-${JS_VERSION}-bin && \

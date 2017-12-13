@@ -9,9 +9,9 @@ setup_jrs() {
     JS_DB_USER=${JS_DB_USER:-jasper}
     JS_DB_PASSWORD=${JS_DB_PASSWORD:-my_password}
     # Choose the correct default port
-    dfl=3306
-    [ "$JS_DB_TYPE" = "postgresql" ] && dfl=5432
-    JS_DB_PORT=${JS_DB_PORT:-$dfl}
+    default_port=3306
+    [ "$JS_DB_TYPE" = "postgresql" ] && default_port=5432
+    JS_DB_PORT=${JS_DB_PORT:-$default_port}
     JS_ENABLE_SAVE_TO_HOST_FS=${JS_ENABLE_SAVE_TO_HOST_FS:-false}
     JS_MAIL_HOST=${JS_MAIL_HOST:-mail.example.com}
     JS_MAIL_PORT=${JS_MAIL_PORT:-25}
@@ -51,23 +51,12 @@ EOF
     popd
 }
 
-run() {
+run_jrs() {
     if [ ! -d "$CATALINA_HOME/webapps/jasperserver" ]; then
         setup_jrs deploy-webapp-ce
     fi
     catalina.sh run
 }
 
-function wait_db() {    
-  echo -n "-----> waiting for database on $JRS_DB_HOST:$JRS_DB_PORT ..."
-  while ! nc -w 1 $JRS_DB_HOST $JRS_DB_PORT 2>/dev/null
-  do
-    echo -n .
-    sleep 1
-  done
-
-  echo '[OK]'
-}
-
 export JS_CATALINA_OPTS=${JS_CATALINA_OPTS:-"-Xmx512m -XX:MaxPermSize=256m -XX:+UseBiasedLocking -XX:BiasedLockingStartupDelay=0 -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+DisableExplicitGC -XX:+CMSIncrementalMode -XX:+CMSIncrementalPacing -XX:+CMSParallelRemarkEnabled -XX:+UseCompressedOops -XX:+UseCMSInitiatingOccupancyOnly"}
-run
+run_jrs
