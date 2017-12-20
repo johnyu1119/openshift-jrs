@@ -5,7 +5,12 @@ setup_jrs() {
     JS_DB_TYPE=${JS_DB_TYPE:-mysql}
     # Allow either postgres or postgresql
     [ "$JS_DB_TYPE" = "postgres" ] && JS_DB_TYPE=postgresql
-    JS_DB_HOST=${JS_DB_HOST:-jasper.db}
+    if [ -v MYSQL_PORT_3306_TCP_ADDR ]; then
+        # using link option at docker --link <mysql-container-name>:mysql
+        JS_DB_HOST=${MYSQL_PORT_3306_TCP_ADDR}
+    else
+    	  JS_DB_HOST=${JS_DB_HOST:-jasper.db}
+    fi
     JS_DB_USER=${JS_DB_USER:-jasper}
     JS_DB_PASSWORD=${JS_DB_PASSWORD:-my_password}
     # Choose the correct default port
