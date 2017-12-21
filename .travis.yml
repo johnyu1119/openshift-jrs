@@ -8,6 +8,7 @@ services:
 install:
   - docker-compose up -d
   - sleep 60
+  - docker logs jrs
 
 before_script:
   - pip install -r requirements.txt
