@@ -10,17 +10,17 @@ services:
     - SERVER_HOST=0.0.0.0
     - SERVER_PASSWD=admin
     - JS_DB_HOST=mysql-jrs
-    - JS_DB_PORT=3307
+    - JS_DB_PORT=3306
     - JS_DB_USER=root
-    - JS_DB_PASSWORD=password
+    - JS_DB_PASSWORD=my_password
     links:
-    - mysql-frs:mysql
+    - "mysql-frs:mysql"
     ports:
     - "8080:8080"
   mysql-frs:
     container_name: mysql-jrs
     image: "mysql:5.5"
     environment:
-    - MYSQL_ROOT_PASSWORD=password
+    - MYSQL_ROOT_PASSWORD=my_password
     ports:
     - "3307:3306"

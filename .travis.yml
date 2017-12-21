@@ -1,0 +1,18 @@
+sudo: required
+
+language: python
+
+services:
+  - docker
+
+install:
+  - docker-compose up
+  - sleep 60
+  - docker logs jrs
+
+before_script:
+  - pip install -r requirements.txt
+
+script:
+  - docker ps | grep -q jrs
+  - python run_tests.py

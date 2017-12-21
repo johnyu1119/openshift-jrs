@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+DB_TIMEOUT=30
 
 setup_jrs() {
     JS_DB_TYPE=${JS_DB_TYPE:-mysql}
@@ -57,7 +58,23 @@ EOF
     popd
 }
 
+wait_for() {
+   ((t = ${DB_TIMEOUT}))
+   echo -n "Waiting for database at ${JS_DB_HOST}:${JS_DB_PORT}"
+   until echo > /dev/tcp/${JS_DB_HOST}/${JS_DB_PORT} 2> /dev/null; do
+     echo -n "."
+     ((t -= 1))
+     sleep 0.5
+     if ((t == 0)); then
+       echo "Database not found";
+       exit 1
+     fi
+   done
+   echo " OK"
+}
+
 run_jrs() {
+    wait_for
     if [ ! -d "$CATALINA_HOME/webapps/jasperserver" ]; then
         setup_jrs deploy-webapp-ce
     fi
