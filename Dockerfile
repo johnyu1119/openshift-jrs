@@ -9,18 +9,19 @@ ENV JS_HOME=/opt/jrs \
     JS_DB_USER=jasper \
     JS_DB_PASSWORD=my_password
 
-RUN  wget -qO /tmp/jrs.zip http://downloads.sourceforge.net/project/jasperserver/JasperServer/JasperReports%20Server%20Community%20Edition%20${JS_VERSION}/TIB_js-jrs-cp_${JS_VERSION}_bin.zip
-
 COPY entrypoint.sh /
 
-RUN rm -fr /usr/local/tomcat/webapps/{examples,docs} && \
-    apk update && \
-    apk add openjdk8 && \
+RUN apk update && \
+    apk add --virtual build-dependencies ca-certificates openssl openjdk8 && \
+    update-ca-certificates && \
+    wget -qO /tmp/jrs.zip http://downloads.sourceforge.net/project/jasperserver/JasperServer/JasperReports%20Server%20Community%20Edition%20${JS_VERSION}/TIB_js-jrs-cp_${JS_VERSION}_bin.zip && \
+    rm -fr /usr/local/tomcat/webapps/{examples,docs} && \
     mkdir -p ${JS_HOME} && \
     unzip -q /tmp/jrs.zip -d ${JS_HOME}/ && \
     mv -v ${JS_HOME}/jasperreports-server-cp-${JS_VERSION}-bin/* ${JS_HOME}/ && \
     rmdir ${JS_HOME}/jasperreports-server-cp-${JS_VERSION}-bin && \
     rm -f /tmp/jrs.zip && \
+    apk del build-dependencies && \
     chmod a+x /entrypoint.sh && \
     chmod -R g+w ${JS_HOME}
 
