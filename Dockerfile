@@ -2,7 +2,7 @@ FROM tomcat:9-alpine
 MAINTAINER Gustavo Oliveira <cetres@gmail.com>
 
 ENV JS_HOME=/opt/jrs \
-    JS_VERSION=6.4.2 \
+    JS_VERSION=6.4.3 \
     JS_DB_TYPE=mysql \
     JS_DB_HOST=jasper.db \
     JS_DB_PORT=3306 \
