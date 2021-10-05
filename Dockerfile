@@ -14,7 +14,8 @@ COPY entrypoint.sh /
 RUN apk update && \
     apk add --virtual build-dependencies ca-certificates openssl openjdk8 && \
     update-ca-certificates && \
-    wget -qO /tmp/jrs.zip http://downloads.sourceforge.net/project/jasperserver/JasperServer/JasperReports%20Server%20Community%20Edition%20${JS_VERSION}/TIB_js-jrs-cp_${JS_VERSION}_bin.zip && \
+    # wget -qO /tmp/jrs.zip http://downloads.sourceforge.net/project/jasperserver/JasperServer/JasperReports%20Server%20Community%20Edition%20${JS_VERSION}/TIB_js-jrs-cp_${JS_VERSION}_bin.zip && \
+    wget -qO /tmp/jrs.zip https://hedcert-uat.vtc.edu.hk/dev/bitnami/TIB_js-jrs-cp_7.8.0_bin.zip && \
     rm -fr /usr/local/tomcat/webapps/{examples,docs} && \
     mkdir -p ${JS_HOME} && \
     unzip -q /tmp/jrs.zip -d ${JS_HOME}/ && \
